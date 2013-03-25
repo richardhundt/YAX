@@ -22,8 +22,6 @@ our $RX_EXEC = $rx_expr;
 our $RX_ITEM = '\[(-?\d+)\]$';
 our $RX_SLCE = '\[(-?\d+)\s*\.\.\s*(-?\d+)\]$';
 
-our %CACHE;
-
 sub new {
     my ( $class, $node ) = @_;
     my $self = bless [ $node ], $class;
@@ -39,8 +37,6 @@ sub compile {
     my ( $self, $expr ) = @_;
     $expr = ".$expr" unless substr( $expr, 0, 1 ) eq '.';
     die "failed to parse `$expr'" unless $expr =~ /$RX_TEST/g;
-
-    return @{ $CACHE{ $expr } } if exists $CACHE{ $expr };
 
     my @exec;
     my @tokens = $self->tokenize( $expr );
@@ -121,7 +117,6 @@ sub compile {
         }
     }
 
-    $CACHE{ $expr } = [ @exec ];
     return @exec;
 }
 
