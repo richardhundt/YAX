@@ -34,6 +34,13 @@ for ( 0 .. 2 ) {
     is($list->[$_]->name, 'b', "element $_ is a <b> tag" );
 }
 
+# run the same query again and see if cache works
+$list = $xdoc->query('..b');
+is( scalar( @$list ), 3, 'got 3 elements' );
+for ( 0 .. 2 ) {
+    is($list->[$_]->name, 'b', "element $_ is a <b> tag (cache?)" );
+}
+
 $list = $xdoc->query('..tag1');
 is( scalar( @$list ), 4, 'got 4 elements' );
 for ( 0 .. 3 ) {
